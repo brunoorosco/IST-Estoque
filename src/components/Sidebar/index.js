@@ -22,6 +22,11 @@ const itensMenu = [{
     'title': 'Estoque',
     'icon': AssessmentIcon,
     'path': '/produtos'
+},
+{
+    'title': 'Fornecedores',
+    'icon': AssessmentIcon,
+    'path': '/fornecedores'
 }]
 
 const subMenu = ['All mail', 'Trash', 'Spam']

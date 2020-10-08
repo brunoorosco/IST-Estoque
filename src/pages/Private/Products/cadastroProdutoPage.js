@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 //import DatePicker from "react-datepicker";
 import moment from 'moment'
-
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
 // import api from '../../../services/api'
 // import InputMoney from '../../InputMoney'
-// import SelectFornecedor from '../../SelectFornecedor'
+//import SelectFornecedor from '../../../components/SelectFornecedor'
 // import SelectMaterial from '../../SelectMaterial'
+
+import "./styles.css"
 
 const CadastroProdutoPage = ({ onSubmit }) => {
 
@@ -17,9 +29,19 @@ const CadastroProdutoPage = ({ onSubmit }) => {
   });
   const [price, setPrice] = useState("");
   const [options, setOptions] = useState([]);
-  const [listMaterial, setListMaterial] = useState([]);
+  const [listMaterial, setListMaterial] = useState([
+    {
+      value: 'kg',
+      label: 'Kilograma',
+    },
+    {
+      value: 'pc',
+      label: 'Peças',
+    },]);
   const [disableInput, setDisableInput] = useState(false)
   const [total, setTotal] = useState('')
+  const [currency, setCurrency] = React.useState('BRL');
+  const [fornecedor, setFornecedor] = useState([]);
 
   const [newItem, setNewItem] = useState({
     notaFiscal: "",
@@ -33,38 +55,71 @@ const CadastroProdutoPage = ({ onSubmit }) => {
     totalPrice: 0,
   });
 
-//    useEffect(() => {
-//     setNewItem({
-//       ...newItem,
-//      fornecedor_id: forn,
-//     })
-//   }, [forn])
+
+  const currencies = [
+    {
+      value: 'USD',
+      label: '$',
+    },
+    {
+      value: 'EUR',
+      label: '€',
+    },
+    {
+      value: 'BTC',
+      label: '฿',
+    },
+    {
+      value: 'BRL',
+      label: 'R$',
+    },
+  ];
+
+  const listFornecedor = [
+    {
+      'id': '1',
+      'name': 'EmpresaX'
+    },
+    {
+      'id': '2',
+      'name': 'EmpresaY'
+    }
+  ]
 
 
-//   useEffect(() => {
-//    api.get('material').then(response => {
-//       setListMaterial(response.data);
-//     })
-//   }, [setListMaterial])
+
+  //    useEffect(() => {
+  //     setNewItem({
+  //       ...newItem,
+  //      fornecedor_id: forn,
+  //     })
+  //   }, [forn])
 
 
-//   useEffect(() => {
+  //   useEffect(() => {
+  //    api.get('material').then(response => {
+  //       setListMaterial(response.data);
+  //     })
+  //   }, [setListMaterial])
 
-//     const valor = (parseFloat(newItem.quantity) * parseFloat(price))
 
-//     if (!isNaN(valor)) {
-//       setNewItem({
-//         ...newItem,
-//         totalPrice: valor,
-//         unitPrice: price
-//       })
-//     } else {
-//       setNewItem({
-//         ...newItem,
-//         totalPrice: 0,
-//       })
-//     }
-//   }, [newItem.quantity, price])
+  //   useEffect(() => {
+
+  //     const valor = (parseFloat(newItem.quantity) * parseFloat(price))
+
+  //     if (!isNaN(valor)) {
+  //       setNewItem({
+  //         ...newItem,
+  //         totalPrice: valor,
+  //         unitPrice: price
+  //       })
+  //     } else {
+  //       setNewItem({
+  //         ...newItem,
+  //         totalPrice: 0,
+  //       })
+  //     }
+  //   }, [newItem.quantity, price])
 
   function setNewTask(evt) {
 
@@ -126,33 +181,124 @@ const CadastroProdutoPage = ({ onSubmit }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={submit} autoComplete="off">
-        <div className="card">
-          <div className="card-body">
-            <h4>Cadastro de Entrada</h4>
-            <div className="row">
 
-              <div className="col-2">
-                <input
-                  name="notaFiscal"
-                  className="form-control"
-                  placeholder="Nota Fiscal / Cupom Fiscal"
-                  onChange={setNewTask}
-                  disabled={disableInput}
+    <Card className="container">
 
-                />
-              </div>
+      <CardHeader
 
-              <div className="col">
-                {/* <SelectFornecedor
+        title="Cadastro de Produto"
+
+      />
+      <CardContent>
+        <form onSubmit={submit} autoComplete="off">
+          <Grid container spacing={3}>
+            <Grid item xs={2}>
+              <TextField
+                fullWidth
+                label="Cód. do Produto"
+                name="code"
+                onChange={setNewTask}
+                defaultValue={newItem.code}
+                disabled={disableInput}
+              />
+            </Grid>
+
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="Descrição do Produto"
+                name="descricao"
+                onChange={setNewTask}
+                disabled={disableInput}
+
+              />
+
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                fullWidth
+                label="NF / Cupom Fiscal"
+                name="notaFiscal"
+                onChange={setNewTask}
+                disabled={disableInput}
+
+              />
+
+            </Grid>
+
+
+            <Grid item xs={3}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="fornecedor">Fornecedor</InputLabel>
+                <Select
+                  fullWidth
+                  labelId="fornecedor"
+                  id="demo-simple-select"
+                  value={fornecedor}
+                  onChange={handleChange}
+                >
+                  {listFornecedor.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+          </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={4}>
+
+              <FormControl fullWidth>
+                <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+                <Select
+                  labelId="demo-controlled-open-select-label"
+                  id="demo-controlled-open-select"
+                  onChange={handleChange}
+
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={2}>
+              <TextField
+                id="standard-select-currency"
+                select
+                label="Select"
+                value={currency}
+                onChange={handleChange}
+
+              >
+                {currencies.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+            </Grid>
+          </Grid>
+          <div className="col-10">
+
+          </div>
+
+          <div className="col">
+            {/* <SelectFornecedor
                   name='idFornecedor'
                   onChange={setForn}
                   disabled={disableInput}
                 /> */}
-              </div>
-              <div className="col-2">
-                {/* <DatePicker
+          </div>
+          <div className="col-2">
+            {/* <DatePicker
                   name="dataEntrada"
                   showPopperArrow={true}
 
@@ -163,53 +309,43 @@ const CadastroProdutoPage = ({ onSubmit }) => {
                   placeholder="Data da Entrega"
                   disabled={disableInput}
                 /> */}
-              </div>
+          </div>
+
+          <div className="row">
+
+
+            <div className="col-2">
 
             </div>
-          </div>
-        </div>
+            <div className="col-5">
+              <TextField
+                id="standard-select-currency"
+                select
+                label="Material"
+                value={newItem.material}
+                onChange={handleSelect}
+                helperText="Selecione o tipo de material"
+              >
+                {listMaterial.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
 
-        <div className="row">
-          <div className="col-2">
-            <input
-              placeholder="Cód. do Produto"
-              name="code"
-              className="form-control"
-              defaultValue={newItem.code}
-              disabled
-            />
-          </div>
-          <div className="col-5">
-            {/* <SelectMaterial
-                  name='material_id'
-                  onChange={setMaterial}
-                  value = {material}
-                //  selectItem = {}
-                 // codeItem = 
-                  nameItem =  {setNewItem({...material,  })}  
-                /> */}
-            <select name='material_id' defaultValue={newItem.material} className="form-control" onChange={handleSelect}>
-              <option value="material" disabled>Material</option>
-              {listMaterial.map(option => (
-                <option key={option.id} value={option.id}>
-                  {option.description}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-1">
-            <input
-              required
-              type="number"
-              name="quantity"
-              className="form-control"
-              placeholder="Qt."
-              onChange={handleChange}
-              value={newItem.quantity}
-            />
-          </div>
-          <div className="col-2">
-            {/* <InputMoney
+            </div>
+            <div className="col-1">
+              <TextField
+                // id="standard-basic"
+                type="number"
+                label="Quantidade"
+                name="quantity"
+                onChange={handleChange}
+                defaultValue={newItem.quantity}
+              />
+            </div>
+            <div className="col-2">
+              {/* <InputMoney
               required
               name="price"
               className="form-control"
@@ -217,24 +353,27 @@ const CadastroProdutoPage = ({ onSubmit }) => {
               onChange={setPrice}
               value={price}
             /> */}
-          </div>
-          <div className="col-2">
-            <input
-              disabled
-              name="totalPrice"
-              className="form-control"
-              placeholder="R$ Total"
-              onChange={handleChange}
-              value={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(newItem.totalPrice)}
-            />
+            </div>
+            <div className="col-2">
+              <TextField
+                disabled
+                name="totalPrice"
+                type="number"
+                label="R$ Total"
+                onChange={handleChange}
+                defaultValue={Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(newItem.totalPrice)}
+              />
+            </div>
+
           </div>
 
-        </div>
-        <button className="btn btn-danger btn-block" type="submit">
-          Adicionar
-        </button>
-      </form>
-    </div>
+          <Button variant="contained" color="primary" type="submit">
+            Adicionar
+        </Button>
+        </form>
+      </CardContent>
+    </Card>
+
   )
 };
 

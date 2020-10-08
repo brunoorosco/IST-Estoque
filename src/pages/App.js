@@ -1,5 +1,9 @@
 import React from 'react';
-import { ProdutosModule, SemPermissaoModule } from "./Private";
+import {
+  ProdutosModule,
+  SemPermissaoModule,
+  FornecedorModule
+} from "./Private";
 import { LoginModule } from "./Public";
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
@@ -18,11 +22,12 @@ function App() {
 
       <Switch>
         <Route path="/login" component={LoginModule} />
-        
+
         <Layout>
-            <Route path="/app" component={DashModule} />
-            <Route path="/produtos" component={ProdutosModule} />
-            <Route path="/sem-permissao" component={SemPermissaoModule} />
+          <Route path="/app" component={DashModule} />
+          <Route path="/produtos" component={ProdutosModule} />
+          <Route path="/fornecedores" component={FornecedorModule} />
+          <Route path="/sem-permissao" component={SemPermissaoModule} />
         </Layout>
       </Switch>
 

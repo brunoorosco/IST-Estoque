@@ -26,8 +26,8 @@ const Header = styled.div`
 `
 
 const ButtonAdd = styled(Button)`
-    height: 30px;
-  `
+    height: 30;
+`
 
 function createData(codigo, name, quantidade, status, action) {
     return { codigo, name, quantidade, status, action };
@@ -41,7 +41,7 @@ const rows = [
     createData('Blusa', 356, 16.0, 49, 3.9),
 ];
 
-export default function ProductsPage() {
+export default function FornecedoresPage() {
 
     const history = useHistory()
 
@@ -52,24 +52,25 @@ export default function ProductsPage() {
 
                 <ButtonAdd
                     onClick={() => {
-                        history.push("/produto/novo")
+                           history.push("/fornecedores/novo")
                     }}
-                    // startIcon={<AddIcon />}
+                   // startIcon={<AddIcon />}
                     variant="contained"
                     size="small"
                     color="primary">
-                    Novo Produto
+                    Novo Fornecedor
                 </ButtonAdd>
             </Header>
             <TableContainer component={Paper}>
-                <TableStyle aria-label="simple table">
+                <TableStyle>
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">Código</TableCell>
                             <TableCell>Descrição</TableCell>
-                            <TableCell align="right">Quant.</TableCell>
-                            <TableCell align="right">Status</TableCell>
-                            <TableCell align="right">Ação</TableCell>
+                            <TableCell align="right">Nome</TableCell>
+                            <TableCell align="right">CNPJ</TableCell>
+                            <TableCell align="right">Telefone</TableCell>
+                            <TableCell align="right">Contato</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
